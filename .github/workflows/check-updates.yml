@@ -24,7 +24,7 @@ jobs:
           echo "latest-version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           
           # 檢查我們的 Docker Hub 是否已有此版本
-          REPO_NAME="your-dockerhub-username/n8n-ffmpeg"
+          REPO_NAME="rxchi1d/n8n-ffmpeg"
           if docker manifest inspect ${REPO_NAME}:${LATEST_VERSION} >/dev/null 2>&1; then
             echo "Version $LATEST_VERSION already exists"
             echo "should-build=false" >> $GITHUB_OUTPUT
