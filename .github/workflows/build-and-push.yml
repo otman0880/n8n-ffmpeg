@@ -49,10 +49,3 @@ jobs:
           echo "Last built: $(date)" >> BUILD_INFO.md
           echo "n8n version: ${{ inputs.n8n-version }}" >> BUILD_INFO.md
           
-      - name: Commit build info
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add BUILD_INFO.md
-          git commit -m "Built version ${{ inputs.n8n-version }}" || exit 0
-          git push
