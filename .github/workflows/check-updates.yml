@@ -32,9 +32,11 @@ jobs:
             echo "New version $LATEST_VERSION found"
             echo "should-build=true" >> $GITHUB_OUTPUT
           fi
-          
-      - name: Trigger build workflow
-        if: steps.version-check.outputs.should-build == 'true'
-        uses: ./.github/workflows/build-and-push.yml
-        with:
-          n8n-version: ${{ steps.version-check.outputs.latest-version }}
+
+  trigger-build:
+    needs: check-updates
+    if: needs.check-updates.outputs.should-build == 'true'
+    uses: ./.github/workflows/build-and-push.yml
+    with:
+      n8n-version: ${{ needs.check-updates.outputs.latest-version }}
+    secrets: inherit
