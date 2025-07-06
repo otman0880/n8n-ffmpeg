@@ -26,11 +26,21 @@ jobs:
           # 檢查我們的 Docker Hub 是否已有此版本
           REPO_NAME="rxchi1d/n8n-ffmpeg"
           if docker manifest inspect ${REPO_NAME}:${LATEST_VERSION} >/dev/null 2>&1; then
-            echo "Version $LATEST_VERSION already exists"
+            echo "Version $LATEST_VERSION already exists in our repository"
             echo "should-build=false" >> $GITHUB_OUTPUT
-          else
-            echo "New version $LATEST_VERSION found"
+            exit 0
+          fi
+          
+          # 檢查官方 Docker Hub 是否已有此版本的 n8n image
+          echo "Checking if official n8n:$LATEST_VERSION image exists on Docker Hub..."
+          if docker manifest inspect n8nio/n8n:${LATEST_VERSION} >/dev/null 2>&1; then
+            echo "Official n8n:$LATEST_VERSION image exists on Docker Hub"
+            echo "New version $LATEST_VERSION found and official image is available"
             echo "should-build=true" >> $GITHUB_OUTPUT
+          else
+            echo "Official n8n:$LATEST_VERSION image not yet available on Docker Hub"
+            echo "Waiting for official image to be published..."
+            echo "should-build=false" >> $GITHUB_OUTPUT
           fi
 
   trigger-build:
