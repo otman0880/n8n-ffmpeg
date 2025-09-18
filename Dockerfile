@@ -2,8 +2,7 @@ FROM n8nio/n8n:latest
 
 USER root
 
-# Install ffmpeg + yt-dlp from Alpine packages
-RUN apk add --no-cache ffmpeg yt-dlp
+# Install yt-dlp via npm wrapper
+RUN npm install -g yt-dlp-exec
 
-# Switch back to default n8n user
 USER node
